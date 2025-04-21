@@ -12,11 +12,16 @@ void GameScene::Initialize()
 	worldTrensform_.Initialize();
 	//カメラの初期化
 	camera_.Initialize();
+	//自キャラの生成
+	player_ = new Player();
+	//自キャラの初期化
+	player_->Initialize(model_, textureHandle_,&camera_);
 }
 
 void GameScene::Update()
-{
-
+{ 
+	//自キャラの更新
+	player_->Update(); 
 }
 
 void GameScene::Draw() 
@@ -25,13 +30,16 @@ void GameScene::Draw()
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	//3Dモデル描画前処理
 	Model::PreDraw(dxCommon->GetCommandList());
-	//3Dモデル描画
-	model_->Draw(worldTrensform_, camera_, textureHandle_);
+	// 自キャラの描画
+	player_->Draw();
 	//3Dモデル描画後処理
 	Model::PostDraw();
+	
 }
 
 GameScene::~GameScene()
 {
+	//自キャラの解放
+	delete player_;
 	delete model_;
 }
