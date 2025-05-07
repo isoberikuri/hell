@@ -1,6 +1,7 @@
 #pragma once
 #include "KamataEngine.h"
 #include "Player.h"
+#include <vector>
 
 //ゲームシーン
 class GameScene
@@ -12,12 +13,19 @@ class GameScene
 	uint32_t textureHandle_ = 0;
 	//3Dモデル
 	KamataEngine::Model* model_ = nullptr;
+	KamataEngine::Model* modelBlock_ = nullptr;
 	//ワールドトランスフォーム
 	KamataEngine::WorldTransform worldTrensform_;
 	//カメラ
 	KamataEngine::Camera camera_;
+	// デバックカメラ有効
+	bool isDebugCameraActive_ = false;
+	// デバッグカメラ
+	KamataEngine::DebugCamera* debugCamera_ = nullptr;
 	// 自キャラ
 	Player* player_ = nullptr;
+
+	std::vector<std::vector<KamataEngine::WorldTransform*>> worldTransformBlocks_;
 
 	//デストラクタ
 	~GameScene();
