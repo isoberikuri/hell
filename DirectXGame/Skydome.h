@@ -2,14 +2,13 @@
 #include "KamataEngine.h"
 
 
-class Player
+class Skydome
 {
 private:
-	// ワールド変換データ
+	//ワールド変換データ
 	KamataEngine::WorldTransform worldTransform_;
-	// モデル
+	//モデル
 	KamataEngine::Model* model_ = nullptr;
-	// テクスチャハンドル
 	KamataEngine::Camera* camera_ = nullptr;
 
 public:

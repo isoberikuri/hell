@@ -1,11 +1,10 @@
 #include "Player.h"
 
-void Player::Initialize(KamataEngine::Model* model, uint32_t textureHandle, KamataEngine::Camera* camera) 
+void Player::Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera) 
 { 
 	//NULLポインタチェック
 	assert(model);
 	model_ = model;
-	textureHandle_ = textureHandle;
 	worldTransform_.Initialize();
 	camera_ = camera;
 }
@@ -18,5 +17,5 @@ void Player::Update()
 
 void Player::Draw() 
 { 
-	model_->Draw(worldTransform_, *camera_, textureHandle_);
+	model_->Draw(worldTransform_, *camera_);
 }
