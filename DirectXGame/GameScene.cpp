@@ -18,6 +18,7 @@ void GameScene::Initialize()
 	//自キャラの生成
 	player_ = new Player();
 	skydome_ = new Skydome();
+	mapChipField_ = new MapChipField;
 	//自キャラの初期化
 	player_->Initialize(modelPlayer_,&camera_);
 	skydome_->Initialize(modelSkydome_,& camera_);
@@ -49,6 +50,8 @@ void GameScene::Initialize()
 	}
 	// デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
+	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
+	GenerateBilocks();
 }
 
 void GameScene::Update()
@@ -119,6 +122,31 @@ void GameScene::Draw()
 	Model::PostDraw();
 }
 
+void GameScene::GenerateBilocks()
+{ 
+	uint32_t numBlockVirtical = mapChipField_->GetNumBlockVirtical();
+	uint32_t numBlockHorizontal = mapChipField_->GetNumBlockHorizontal();
+
+	worldTransformBlocks_.resize(numBlockVirtical);
+	for (uint32_t i = 0; i < numBlockVirtical; ++i)
+	{
+		worldTransformBlocks_[i].resize(numBlockHorizontal);
+	}
+	for (uint32_t i = 0; i < numBlockVirtical; ++i)
+	{
+		for (uint32_t j = 0; j < numBlockHorizontal; ++j)
+		{
+			if (mapChipField_->GetMapChipTypeByIndex(j, i) == MapChipType::kBlock)
+			{
+				WorldTransform* worldTransform = new WorldTransform();
+				worldTransform->Initialize();
+				worldTransformBlocks_[i][j] = worldTransform;
+				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j,i);
+			}
+		}
+	}
+}
+
 GameScene::~GameScene()
 {
 	//自キャラの解放
@@ -126,6 +154,7 @@ GameScene::~GameScene()
 	delete modelPlayer_;
 	delete modelBlock_;
 	delete modelSkydome_;
+	delete mapChipField_;
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_)
 	{
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine)

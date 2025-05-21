@@ -2,6 +2,7 @@
 #include "KamataEngine.h"
 #include "Player.h"
 #include "Skydome.h"
+#include "MapChipField.h"
 #include <vector>
 
 //ゲームシーン
@@ -27,6 +28,7 @@ class GameScene
 	// 自キャラ
 	Player* player_ = nullptr;
 	Skydome* skydome_ = nullptr;
+	MapChipField* mapChipField_;
 
 	std::vector<std::vector<KamataEngine::WorldTransform*>> worldTransformBlocks_;
 
@@ -42,5 +44,7 @@ class GameScene
 
 	//描画
 	void Draw();
+
+	void GenerateBilocks();
 
 };
