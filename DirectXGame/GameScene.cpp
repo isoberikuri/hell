@@ -20,7 +20,7 @@ void GameScene::Initialize()
 	skydome_ = new Skydome();
 	mapChipField_ = new MapChipField;
 	//自キャラの初期化
-	player_->Initialize(modelPlayer_,&camera_);
+	//player_->Initialize(modelPlayer_, &camera_);
 	skydome_->Initialize(modelSkydome_,& camera_);
 	//要素数
 	const uint32_t kNumBlockVirtical = 10;
@@ -52,6 +52,8 @@ void GameScene::Initialize()
 	debugCamera_ = new DebugCamera(1280, 720);
 	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
 	GenerateBilocks();
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 18);
+	player_->Initialize(modelPlayer_, &camera_, playerPosition);
 }
 
 void GameScene::Update()

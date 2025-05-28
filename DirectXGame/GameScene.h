@@ -30,6 +30,7 @@ class GameScene
 	Skydome* skydome_ = nullptr;
 	MapChipField* mapChipField_;
 
+
 	std::vector<std::vector<KamataEngine::WorldTransform*>> worldTransformBlocks_;
 
 	//デストラクタ
