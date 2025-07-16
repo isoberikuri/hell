@@ -54,6 +54,16 @@ void GameScene::Initialize()
 	GenerateBilocks();
 	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 18);
 	player_->Initialize(modelPlayer_, &camera_, playerPosition);
+	//カメラコントロール
+	cameraController_ = new CameraController;
+	cameraController_->Initialize();
+	cameraController_->SetTarget(player_);
+	cameraController_->Reset();
+	//範囲指定
+	CameraController::Rect cameraArea = {12.0f, 100 - 12.0f, 6.0f, 6.0f};
+	cameraController_->SetMovableArea(cameraArea);
+
+
 }
 
 void GameScene::Update()
@@ -61,6 +71,7 @@ void GameScene::Update()
 	//自キャラの更新
 	player_->Update(); 
 	skydome_->Update();
+	cameraController_->Update();
 	//ブロックの更新
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_)
 	{
@@ -88,15 +99,19 @@ void GameScene::Update()
 #endif // _DEBUG
 
 	// カメラの処理
-	if (isDebugCameraActive_) {
+	if (isDebugCameraActive_)
+	{
 		debugCamera_->Update();
 		camera_.matView = debugCamera_->GetCamera().matView;
 		camera_.matProjection = debugCamera_->GetCamera().matProjection;
 		// ビュープロジェクション行列の転送
 		camera_.TransferMatrix();
-	} else {
+	} else
+	{
+		camera_.matView = cameraController_->GetViewProjection().matView;
+		camera_.matProjection = cameraController_->GetViewProjection().matProjection;
 		// ビュープロジェクション行列の更新と転送
-		camera_.UpdateMatrix();
+		camera_.TransferMatrix();
 	}
 
 }

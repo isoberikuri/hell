@@ -3,12 +3,13 @@
 #include "Player.h"
 #include "Skydome.h"
 #include "MapChipField.h"
+#include "CameraController.h"
 #include <vector>
 
 //ゲームシーン
 class GameScene
 {
-	public:
+public:
 
 
 	//テクスチャハンドル
@@ -29,6 +30,8 @@ class GameScene
 	Player* player_ = nullptr;
 	Skydome* skydome_ = nullptr;
 	MapChipField* mapChipField_;
+	CameraController* cameraController_ = nullptr;
+
 
 
 	std::vector<std::vector<KamataEngine::WorldTransform*>> worldTransformBlocks_;
