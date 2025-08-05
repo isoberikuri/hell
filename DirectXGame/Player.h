@@ -4,7 +4,8 @@
 
 class Player
 {
-private:
+//private:
+public:
 	// ワールド変換データ
 	KamataEngine::WorldTransform worldTransform_;
 	// モデル
@@ -34,6 +35,7 @@ private:
 	static inline const float kLimitFallSpeed = 1.0f;
 	static inline const float kJumpAcceleration = 1.0f;
 
+	const KamataEngine::Vector3& GetVelocity() const { return velocity_; }
 	
 
 public:
