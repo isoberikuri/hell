@@ -9,9 +9,11 @@ void CameraController::Initialize()
 void CameraController::Update()
 { 
 	const KamataEngine::Vector3& targetVelocity = target_->GetVelocity();
-
 	const KamataEngine::WorldTransform& targetWorldTransform = target_->GetWorldTransform();
 	camera_.translation_ = targetWorldTransform.translation_ + targetOffset_ + targetVelocity * kVelocityBias;
+	//座標補足
+	targetPosition_ = targetWorldTransform.translation_ + targetVelocity * kVelocityBias;
+	camera_.translation_.x = Lerp(camera_.translation_.x, targetPosition_.x, kInterpolationRate);
 	//追従対象が画面外に出ないように補正
 	camera_.translation_.x = max(camera_.translation_.x, camera_.translation_.x + targetMargin.left);
 	camera_.translation_.x = min(camera_.translation_.x, camera_.translation_.x + targetMargin.right);

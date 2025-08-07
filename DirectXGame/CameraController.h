@@ -35,7 +35,7 @@ public:
 	//座標補問割合
 	static inline const float kInterpolationRate = 1.0f;
 	//速度掛け率
-	static inline const float kVelocityBias = 30;
+	static inline const float kVelocityBias = 4.0f;
 	//追従対象カメラ移動範囲
 	static inline const Rect targetMargin = {-9.0f, 9.0f, -5.0f, 5.0f};
 
