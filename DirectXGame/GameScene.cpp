@@ -62,7 +62,8 @@ void GameScene::Initialize()
 	//範囲指定
 	CameraController::Rect cameraArea = {12.0f, 100 - 12.0f, 6.0f, 6.0f};
 	cameraController_->SetMovableArea(cameraArea);
-
+	//自キャラの生成と初期化
+	player_->SetMapChipField(mapChipField_);
 
 }
 

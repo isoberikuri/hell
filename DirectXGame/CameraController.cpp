@@ -27,7 +27,7 @@ void CameraController::Update()
 	camera_.translation_.y = min(camera_.translation_.y, movableArea_.top);
 	//座標補問
 	camera_.translation_.x = Lerp(camera_.translation_.x, targetPosition_.x, kInterpolationRate);
-	camera_.translation_.y = Lerp(camera_.translation_.y, targetPosition_.y, kInterpolationRate);
+	//camera_.translation_.y = Lerp(camera_.translation_.y, targetPosition_.y, kInterpolationRate);
 
 	camera_.UpdateMatrix();
 }
