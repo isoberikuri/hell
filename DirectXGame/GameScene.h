@@ -5,6 +5,7 @@
 #include "MapChipField.h"
 #include "CameraController.h"
 #include <vector>
+#include "Enemy.h"
 
 //ゲームシーン
 class GameScene
@@ -18,6 +19,8 @@ public:
 	KamataEngine::Model* modelPlayer_ = nullptr;
 	KamataEngine::Model* modelBlock_ = nullptr;
 	KamataEngine::Model* modelSkydome_ = nullptr;
+	// モデル敵
+	KamataEngine::Model* modelEnemy_ = nullptr;
 	//ワールドトランスフォーム
 	KamataEngine::WorldTransform worldTrensform_;
 	//カメラ
@@ -31,6 +34,8 @@ public:
 	Skydome* skydome_ = nullptr;
 	MapChipField* mapChipField_;
 	CameraController* cameraController_ = nullptr;
+	// 敵
+	Enemy* enemy_ = nullptr;
 
 
 
