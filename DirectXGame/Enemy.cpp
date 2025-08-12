@@ -45,7 +45,7 @@ void Enemy::Update() {
 	worldTransform_.rotation_.x = std::sin(walkTimer_);
 
 	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
-	//worldTransform_.TransferMatrix();
+	worldTransform_.TransferMatrix();
 }
 // 描画
 void Enemy::Draw()

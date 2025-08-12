@@ -11,6 +11,7 @@ void GameScene::Initialize()
 	modelPlayer_ = Model::CreateFromOBJ("player");
 	modelBlock_ = Model::CreateFromOBJ("block");
 	modelSkydome_ = Model::CreateFromOBJ("SkyDome",true);
+	modelEnemy_ = Model::CreateFromOBJ("Enemy");
 	//ワールドトランスフォームの初期化
 	worldTrensform_.Initialize();
 	//カメラの初期化
@@ -66,7 +67,9 @@ void GameScene::Initialize()
 	player_->SetMapChipField(mapChipField_);
 	// 敵
 	enemy_ = new Enemy();
-	Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(15, 18);
+	Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(40, 18);
+	enemy_->Initialize(modelEnemy_, &camera_, enemyPosition);
+
 
 }
 
@@ -129,6 +132,7 @@ void GameScene::Draw()
 	Model::PreDraw(dxCommon->GetCommandList());
 	// 自キャラの描画
 	player_->Draw();
+	enemy_->Draw();
 	skydome_->Draw();
 	// ブロックの描画
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_)
