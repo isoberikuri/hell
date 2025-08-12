@@ -172,7 +172,8 @@ void GameScene::CheckAllCollisions() {
 	aabb1 = player_->GetAABB();
 
 	// 自キャラと敵弾全ての当たり判定
-	for (Enemy* enemy : enemies_) {
+	for (Enemy* enemy : enemies_)
+	{
 		// 敵弾の座標
 		aabb2 = enemy->GetAABB();
 		// AABB同士の交差判定

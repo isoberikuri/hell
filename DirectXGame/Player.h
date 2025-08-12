@@ -1,8 +1,10 @@
 #pragma once
 #include "KamataEngine.h"
 #include <vector>
+#include "MyMath.h"
 
 class MapChipField;
+class Enemy;
 
 // ２移動量を加味して衝突判定する//
 // マップとの当たり判定情報
