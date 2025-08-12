@@ -35,7 +35,10 @@ public:
 	MapChipField* mapChipField_;
 	CameraController* cameraController_ = nullptr;
 	// 敵
-	Enemy* enemy_ = nullptr;
+	std::list<Enemy*> enemies_;
+
+	// 全ての当たり判定を行う
+	void CheckAllCollisions();
 
 
 

@@ -66,9 +66,15 @@ void GameScene::Initialize()
 	//自キャラの生成と初期化
 	player_->SetMapChipField(mapChipField_);
 	// 敵
-	enemy_ = new Enemy();
-	Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(40, 18);
-	enemy_->Initialize(modelEnemy_, &camera_, enemyPosition);
+	//enemy_ = new Enemy();
+	//Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(40, 18);
+	//enemy_->Initialize(modelEnemy_, &camera_, enemyPosition);
+	for (int32_t i = 0; i < 5; i++) {
+		Enemy* newEnemy = new Enemy();
+		Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(6 + i, 18);
+		newEnemy->Initialize(modelEnemy_, &camera_, enemyPosition);
+		enemies_.push_back(newEnemy);
+	}
 
 
 }
@@ -79,7 +85,10 @@ void GameScene::Update()
 	player_->Update(); 
 	skydome_->Update();
 	cameraController_->Update();
-	enemy_->Update();
+	for (Enemy* enemy : enemies_)
+	{
+		enemy->Update();
+	}
 	//ブロックの更新
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_)
 	{
@@ -122,6 +131,9 @@ void GameScene::Update()
 		camera_.TransferMatrix();
 	}
 
+	// 全ての当たり判定を行う
+	CheckAllCollisions();
+
 }
 
 void GameScene::Draw() 
@@ -132,7 +144,10 @@ void GameScene::Draw()
 	Model::PreDraw(dxCommon->GetCommandList());
 	// 自キャラの描画
 	player_->Draw();
-	enemy_->Draw();
+	for (Enemy* enemy : enemies_)
+	{
+		enemy->Draw();
+	}
 	skydome_->Draw();
 	// ブロックの描画
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_)
@@ -146,6 +161,30 @@ void GameScene::Draw()
 	}
 	//3Dモデル描画後処理
 	Model::PostDraw();
+}
+
+void GameScene::CheckAllCollisions() {
+#pragma region 自キャラと敵キャラの当たり判定
+	// 判定対象１と２の座標
+	AABB aabb1, aabb2;
+
+	// 自キャラの座標
+	aabb1 = player_->GetAABB();
+
+	// 自キャラと敵弾全ての当たり判定
+	for (Enemy* enemy : enemies_) {
+		// 敵弾の座標
+		aabb2 = enemy->GetAABB();
+		// AABB同士の交差判定
+		if (IsCollision(aabb1, aabb2)) {
+			// 自キャラの衝突時間関数を呼び出す
+			player_->OnCollision(enemy);
+			// 敵弾の衝突時コールバックを呼び出す
+			enemy->OnCollision(player_);
+		}
+	}
+
+#pragma endregion
 }
 
 void GameScene::GenerateBilocks()
@@ -181,7 +220,10 @@ GameScene::~GameScene()
 	delete modelBlock_;
 	delete modelSkydome_;
 	delete mapChipField_;
-	delete enemy_;
+	for (Enemy* enemy : enemies_)
+	{
+		delete enemy;
+	}
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_)
 	{
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine)
