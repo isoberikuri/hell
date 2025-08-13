@@ -12,6 +12,7 @@ void GameScene::Initialize()
 	modelBlock_ = Model::CreateFromOBJ("block");
 	modelSkydome_ = Model::CreateFromOBJ("SkyDome",true);
 	modelEnemy_ = Model::CreateFromOBJ("Enemy");
+	modelDeathparticles_ = Model::CreateFromOBJ("deathParticle");
 	//ワールドトランスフォームの初期化
 	worldTrensform_.Initialize();
 	//カメラの初期化
@@ -75,7 +76,9 @@ void GameScene::Initialize()
 		newEnemy->Initialize(modelEnemy_, &camera_, enemyPosition);
 		enemies_.push_back(newEnemy);
 	}
-
+	// 仮の生成処理。後で消す
+	deathParticles_ = new DeathParticles;
+	deathParticles_->Initialize(modelDeathparticles_, &camera_, playerPosition);
 
 }
 
@@ -133,7 +136,11 @@ void GameScene::Update()
 
 	// 全ての当たり判定を行う
 	CheckAllCollisions();
-
+	// モデルパーティクル
+	if (deathParticles_)
+	{
+		deathParticles_->Update();
+	}
 }
 
 void GameScene::Draw() 
@@ -161,6 +168,11 @@ void GameScene::Draw()
 	}
 	//3Dモデル描画後処理
 	Model::PostDraw();
+	// モデルパーティクル
+	if (deathParticles_)
+	{
+		deathParticles_->Draw();
+	}
 }
 
 void GameScene::CheckAllCollisions() {
@@ -221,6 +233,7 @@ GameScene::~GameScene()
 	delete modelBlock_;
 	delete modelSkydome_;
 	delete mapChipField_;
+	delete deathParticles_;
 	for (Enemy* enemy : enemies_)
 	{
 		delete enemy;

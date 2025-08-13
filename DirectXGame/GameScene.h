@@ -6,6 +6,8 @@
 #include "CameraController.h"
 #include <vector>
 #include "Enemy.h"
+#include"DeathParticles.h"
+
 
 //ゲームシーン
 class GameScene
@@ -21,6 +23,8 @@ public:
 	KamataEngine::Model* modelSkydome_ = nullptr;
 	// モデル敵
 	KamataEngine::Model* modelEnemy_ = nullptr;
+	// デスパーティークル
+	KamataEngine::Model* modelDeathparticles_ = nullptr; 
 	//ワールドトランスフォーム
 	KamataEngine::WorldTransform worldTrensform_;
 	//カメラ
@@ -39,6 +43,8 @@ public:
 
 	// 全ての当たり判定を行う
 	void CheckAllCollisions();
+
+	DeathParticles* deathParticles_ = nullptr;
 
 
 
