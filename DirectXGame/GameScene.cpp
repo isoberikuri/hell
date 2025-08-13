@@ -166,13 +166,12 @@ void GameScene::Draw()
 			modelBlock_->Draw(*worldTransformBlock, camera_);
 		}
 	}
-	//3Dモデル描画後処理
-	Model::PostDraw();
 	// モデルパーティクル
-	if (deathParticles_)
-	{
+	if (deathParticles_) {
 		deathParticles_->Draw();
 	}
+	//3Dモデル描画後処理
+	Model::PostDraw();
 }
 
 void GameScene::CheckAllCollisions() {
