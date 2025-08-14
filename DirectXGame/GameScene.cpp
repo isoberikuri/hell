@@ -76,9 +76,6 @@ void GameScene::Initialize()
 		newEnemy->Initialize(modelEnemy_, &camera_, enemyPosition);
 		enemies_.push_back(newEnemy);
 	}
-	// 仮の生成処理。後で消す
-	deathParticles_ = new DeathParticles;
-	deathParticles_->Initialize(modelDeathparticles_, &camera_, playerPosition);
 	// ゲームプレイフェーズから開始
 	phase_ = Phase::kPlay;
 }
@@ -149,7 +146,8 @@ void GameScene::Update()
 		}
 		break;
 	case Phase::kDeath:
-		if (deathParticles_ && deathParticles_->IsFinished()) {
+		if (deathParticles_ && deathParticles_->IsFinished())
+		{
 			finished_ = true;
 		}
 		// デス演出フェーズの処理////////////////////////////////////
@@ -287,8 +285,10 @@ void GameScene::GenerateBilocks()
 		}
 	}
 }
-void GameScene::ChangePhase() { ///////////////////////////////////////////////////////////
-	switch (phase_) {
+void GameScene::ChangePhase()
+{ ///////////////////////////////////////////////////////////
+	switch (phase_)
+	{
 	case Phase::kPlay:
 		// ゲームプレイフェーズの処理
 		if (player_->IsDead()) {

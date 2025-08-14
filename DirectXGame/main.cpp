@@ -72,15 +72,15 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
 	KamataEngine::Initialize(L"LE2D_05_イソベ_リクリ_AL3");
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
-	GameScene* gameScene = new GameScene();
+	//GameScene* gameScene = new GameScene();
 
 	// 最初のシーンの初期化
 	scene = Scene::kTitle;
 	titleScene = new TitleScene;
 	titleScene->Initialize();
 
-	gameScene->Initialize();
-	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
+	//gameScene->Initialize();
+	//DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	// メインループ
 	while (true)
 	{
@@ -96,7 +96,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		UpdateScene();
 
 		//ゲームシーンの更新
-		gameScene->Update();
+		//gameScene->Update();
 
 
 
@@ -106,7 +106,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		
 
 		//ゲームシーンの描画
-		gameScene->Draw();
+		//gameScene->Draw();
+		DrawScene();
 
 
 
