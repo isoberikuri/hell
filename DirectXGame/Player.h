@@ -109,6 +109,12 @@ public:
 	// 衝突応答
 	void OnCollision(const Enemy* enemy);
 
+	// デスフラグ
+	bool isDead_ = false;
+
+	// デスフラグのgetter
+	bool IsDead() const { return isDead_; }
+
 public:
 	// 初期化
 	void Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, const KamataEngine::Vector3& position);

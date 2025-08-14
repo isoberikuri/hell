@@ -46,6 +46,24 @@ public:
 
 	DeathParticles* deathParticles_ = nullptr;
 
+	// ゲームのフェーズ（型）
+	enum class Phase {
+		kPlay,  // ゲームプレイ
+		kDeath, // デス演出
+	};
+
+	// ゲームの現在フェーズ（変数）
+	Phase phase_;
+
+	// フェーズの切り替え
+	void ChangePhase();
+
+	// 終了フラグ
+	bool finished_ = false;
+
+	// デスフラグのgetter
+	bool IsFinished() const { return finished_; }
+
 
 
 	std::vector<std::vector<KamataEngine::WorldTransform*>> worldTransformBlocks_;
