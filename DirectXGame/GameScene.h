@@ -7,6 +7,7 @@
 #include <vector>
 #include "Enemy.h"
 #include"DeathParticles.h"
+#include"Fade.h"
 
 
 //ゲームシーン
@@ -48,8 +49,10 @@ public:
 
 	// ゲームのフェーズ（型）
 	enum class Phase {
-		kPlay,  // ゲームプレイ
-		kDeath, // デス演出
+		kFadeIn,  // フェードイン
+		kPlay,    // ゲームプレイ
+		kDeath,   // デス演出
+		kFadeOut, // フェードアウト
 	};
 
 	// ゲームの現在フェーズ（変数）
@@ -63,6 +66,8 @@ public:
 
 	// デスフラグのgetter
 	bool IsFinished() const { return finished_; }
+	// フェード
+	Fade* fade_ = nullptr;
 
 
 

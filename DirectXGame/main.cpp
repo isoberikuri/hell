@@ -8,7 +8,8 @@ using namespace KamataEngine;
 GameScene* gameScene = nullptr;
 TitleScene* titleScene = nullptr;
 
-enum class Scene {
+enum class Scene
+{
 	kUnknown = 0,
 	kTitle,
 	kGame,

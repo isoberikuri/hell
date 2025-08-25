@@ -78,77 +78,78 @@ void GameScene::Initialize()
 	}
 	// ゲームプレイフェーズから開始
 	phase_ = Phase::kPlay;
+	// フェード
+	fade_ = new Fade();
+	fade_->Initialize();
+	fade_->Start(Fade::Status::FadeIn, 1.0f);
 }
 
-void GameScene::Update()
-{
+void GameScene::Update() {
+
+	// フェード
+	fade_->Update();
 	ChangePhase();
 
-	switch (phase_)
-	{
+	switch (phase_) {
 	case Phase::kPlay:
+		// ゲームプレイフェーズの処理////////////////////////////////////
+		// 天球の更新
+		skydome_->Update();
 		// 自キャラの更新
 		player_->Update();
-		skydome_->Update();
-		cameraController_->Update();
-		for (Enemy* enemy : enemies_)
-		{
+		// 敵の更新
+		for (Enemy* enemy : enemies_) {
 			enemy->Update();
 		}
-		// ブロックの更新
-		for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_)
-		{
-			for (WorldTransform* worldTransformBlock : worldTransformBlockLine)
-			{
-				if (!worldTransformBlock)
-					continue;
-				worldTransformBlock->scale_;
-				worldTransformBlock->rotation_;
-				worldTransformBlock->translation_;
-
-				worldTransformBlock->matWorld_ = MakeAffineMatrix(worldTransformBlock->scale_, worldTransformBlock->rotation_, worldTransformBlock->translation_);
-
-				worldTransformBlock->TransferMatrix();
-			}
-		}
-
-		// デバックカメラの更新
+		// カメラコントローラーの更新
+		cameraController_->Update();
+		// カメラの更新
 		debugCamera_->Update();
-
 #ifdef _DEBUG
-		if (Input::GetInstance()->TriggerKey(DIK_SPACE))
-		{
+		if (Input::GetInstance()->TriggerKey(DIK_0)) {
 			isDebugCameraActive_ = !isDebugCameraActive_;
 		}
 #endif // _DEBUG
-
-		// カメラの処理
-		if (isDebugCameraActive_)
-		{
+		if (isDebugCameraActive_) {
+			// デバックカメラの更新
 			debugCamera_->Update();
+			// デバックカメラのビュー行列
 			camera_.matView = debugCamera_->GetCamera().matView;
+			// デバックカメラのプロジェクション行列
 			camera_.matProjection = debugCamera_->GetCamera().matProjection;
 			// ビュープロジェクション行列の転送
 			camera_.TransferMatrix();
 		} else {
+			// ビュープロジェクション行列の更新と転送
 			camera_.matView = cameraController_->GetViewProjection().matView;
 			camera_.matProjection = cameraController_->GetViewProjection().matProjection;
-			// ビュープロジェクション行列の更新と転送
+			// ビュープロジェクション行列の転送
 			camera_.TransferMatrix();
 		}
+		// ブロックの更新
+		for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
+			for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
+				if (!worldTransformBlock) {
+					continue;
+				}
+				// アフィン変換行列の作成
+				worldTransformBlock->matWorld_ = MakeAffineMatrix(worldTransformBlock->scale_, worldTransformBlock->rotation_, worldTransformBlock->translation_);
 
-		// 全ての当たり判定を行う
-		CheckAllCollisions();
-		// モデルパーティクル
-		if (deathParticles_)
-		{
-			deathParticles_->Update();
+				/*	worldTransformBlock->matWorld_ = アフィン変換行列　*/
+
+				// 定数バッファに転送する
+				worldTransformBlock->TransferMatrix();
+			}
 		}
+		// 全ての当たり判定
+		CheckAllCollisions();
+
 		break;
 	case Phase::kDeath:
-		if (deathParticles_ && deathParticles_->IsFinished())
-		{
-			finished_ = true;
+		if (deathParticles_ && deathParticles_->IsFinished()) {
+			phase_ = Phase::kFadeOut;
+
+			fade_->Start(Fade::Status::FadeOut, 1.0f);
 		}
 		// デス演出フェーズの処理////////////////////////////////////
 		//  //天球の更新
@@ -202,6 +203,60 @@ void GameScene::Update()
 			}
 		}
 		break;
+	case Phase::kFadeIn:
+		// ゲームプレイフェーズの処理////////////////////////////////////
+		// 天球の更新
+		skydome_->Update();
+		// 自キャラの更新
+		player_->Update();
+		// 敵の更新
+		for (Enemy* enemy : enemies_) {
+			enemy->Update();
+		}
+		// カメラコントローラーの更新
+		cameraController_->Update();
+		// カメラの更新
+		debugCamera_->Update();
+#ifdef _DEBUG
+		if (Input::GetInstance()->TriggerKey(DIK_0)) {
+			isDebugCameraActive_ = !isDebugCameraActive_;
+		}
+#endif // _DEBUG
+		if (isDebugCameraActive_) {
+			// デバックカメラの更新
+			debugCamera_->Update();
+			// デバックカメラのビュー行列
+			camera_.matView = debugCamera_->GetCamera().matView;
+			// デバックカメラのプロジェクション行列
+			camera_.matProjection = debugCamera_->GetCamera().matProjection;
+			// ビュープロジェクション行列の転送
+			camera_.TransferMatrix();
+		} else {
+			// ビュープロジェクション行列の更新と転送
+			camera_.matView = cameraController_->GetViewProjection().matView;
+			camera_.matProjection = cameraController_->GetViewProjection().matProjection;
+			// ビュープロジェクション行列の転送
+			camera_.TransferMatrix();
+		}
+		// ブロックの更新
+		for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
+			for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
+				if (!worldTransformBlock) {
+					continue;
+				}
+				// アフィン変換行列の作成
+				worldTransformBlock->matWorld_ = MakeAffineMatrix(worldTransformBlock->scale_, worldTransformBlock->rotation_, worldTransformBlock->translation_);
+
+				/*	worldTransformBlock->matWorld_ = アフィン変換行列　*/
+
+				// 定数バッファに転送する
+				worldTransformBlock->TransferMatrix();
+			}
+		}
+		// 全ての当たり判定
+		CheckAllCollisions();
+
+		break;
 	}
 }
 
@@ -212,7 +267,10 @@ void GameScene::Draw()
 	//3Dモデル描画前処理
 	Model::PreDraw(dxCommon->GetCommandList());
 	// 自キャラの描画
-	player_->Draw();
+	if (phase_ == Phase::kPlay || phase_ == Phase::kFadeIn)
+	{
+		player_->Draw();
+	}
 	for (Enemy* enemy : enemies_)
 	{
 		enemy->Draw();
@@ -234,6 +292,8 @@ void GameScene::Draw()
 	}
 	//3Dモデル描画後処理
 	Model::PostDraw();
+	// フェード
+	fade_->Draw();
 }
 
 void GameScene::CheckAllCollisions() {
@@ -287,8 +347,7 @@ void GameScene::GenerateBilocks()
 }
 void GameScene::ChangePhase()
 { ///////////////////////////////////////////////////////////
-	switch (phase_)
-	{
+	switch (phase_) {
 	case Phase::kPlay:
 		// ゲームプレイフェーズの処理
 		if (player_->IsDead()) {
@@ -308,6 +367,19 @@ void GameScene::ChangePhase()
 		// デス演出フェーズの処理
 
 		break;
+
+	case Phase::kFadeIn:
+		if (fade_->IsFinished()) {
+			// ゲームプレイ
+			phase_ = Phase::kPlay;
+		}
+		break;
+	case Phase::kFadeOut:
+		// シーン終了
+		if (fade_->IsFinished()) {
+			finished_ = true;
+		}
+		break;
 	}
 }
 
@@ -320,6 +392,8 @@ GameScene::~GameScene()
 	delete modelSkydome_;
 	delete mapChipField_;
 	delete deathParticles_;
+	// フェード
+	delete fade_;
 	for (Enemy* enemy : enemies_)
 	{
 		delete enemy;
