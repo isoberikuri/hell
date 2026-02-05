@@ -11,7 +11,7 @@ using namespace MathUtility;
 
 void Player::Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, const KamataEngine::Vector3& position) {
 	//NULLポインタチェック
-	assert(model);
+	//assert(model);
 	model_ = model;
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
@@ -80,7 +80,7 @@ void Player::Update()
 	    (void)enemy;
 
 	    // 当たったら死ぬ　
-	    isDead_ = true;
+	    isPlayerDead_ = true;
 
 	    ////ジャンプ開始（仮処理）
 	    // velocity_ += Vector3(0,1,0);

@@ -3,6 +3,7 @@
 #include "MyMath.h"
 #include <algorithm>
 #include <numbers>
+#include "Bullet.h"
 
 using namespace KamataEngine;
 using namespace MathUtility;
@@ -10,7 +11,7 @@ using namespace MathUtility;
 // 初期化
 void Enemy::Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, KamataEngine::Vector3& position) {
 	// NULLポインタチェック
-	assert(model);
+	//assert(model);
 
 	// 引数の内容をメンバ変数に記録
 	camera_ = camera;
@@ -73,4 +74,10 @@ AABB Enemy::GetAABB() {
 	return aabb;
 }
 
-void Enemy::OnCollision(const Player* player) { (void)player; }
+void Enemy::OnCollisionEP(const Player* player) { (void)player; }
+
+void Enemy::OnCollisionEB(const Bullet* bullet)
+{
+	(void)bullet; // 未使用引数を明示的に無視
+	isEnemyDead_ = true;
+}

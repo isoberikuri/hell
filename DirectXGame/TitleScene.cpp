@@ -5,8 +5,6 @@
 void TitleScene::Initialize() {
 	// 3Dモデルの生成
 	modelTitle_ = Model::CreateFromOBJ("titleFont", true);
-	modelPlayer_ = Model::CreateFromOBJ("player");
-
 	// カメラの初期化
 	camera_.Initialize();
 
@@ -24,6 +22,10 @@ void TitleScene::Initialize() {
 	fade_ = new Fade();
 	fade_->Initialize();
 	fade_->Start(Fade::Status::FadeIn, 1.0f);
+
+	textureHandle_ = TextureManager::Load("title1.png");
+	sprite_ = Sprite::Create(textureHandle_, {0, 0});
+
 }
 
 void TitleScene::Update() {
@@ -64,15 +66,23 @@ void TitleScene::Update() {
 
 void TitleScene::Draw() {
 
+
 	// DirectXCommonインスタンスの取得
 	DirectXCommon* dxCommon_ = DirectXCommon::GetInstance();
 
 	// ３Dモデル描画前処理
+	Sprite::PreDraw(dxCommon_->GetCommandList());
+	sprite_->Draw();
+	Sprite::PostDraw();
+	// 深度バッファクリア
+	dxCommon_->ClearDepthBuffer();
 	Model::PreDraw(dxCommon_->GetCommandList());
 
+
+
 	// ここに３Dモデルインスタンスの描画処理を記述する
-	modelTitle_->Draw(worldTransformTitle_, camera_);
-	modelPlayer_->Draw(worldTransformPlayer_, camera_);
+	//modelTitle_->Draw(worldTransformTitle_, camera_);
+	//modelPlayer_->Draw(worldTransformPlayer_, camera_);
 	// ３Dモデル描画後処理
 	Model::PostDraw();
 
@@ -83,6 +93,7 @@ TitleScene::~TitleScene() {
 	// モデル
 	delete modelTitle_;
 	delete modelPlayer_;
+	delete sprite_;
 
 	// フェード
 	delete fade_;

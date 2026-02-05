@@ -110,10 +110,10 @@ public:
 	void OnCollision(const Enemy* enemy);
 
 	// デスフラグ
-	bool isDead_ = false;
+	bool isPlayerDead_ = false;
 
 	// デスフラグのgetter
-	bool IsDead() const { return isDead_; }
+	bool IsDead() const { return isPlayerDead_; }
 
 public:
 	// 初期化

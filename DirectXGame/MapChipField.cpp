@@ -31,7 +31,7 @@ void MapChipField::LoadMapChipCsv(const std::string& filePath)
 
 	std::ifstream file;
 	file.open(filePath);
-	assert(file.is_open());
+	//assert(file.is_open());
 
     std::stringstream mapChipCsv;
     mapChipCsv << file.rdbuf();

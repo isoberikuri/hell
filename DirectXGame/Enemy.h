@@ -3,6 +3,7 @@
 #include "MyMath.h"
 
 class Player;
+class Bullet;
 class Enemy
 {
 public:
@@ -36,7 +37,12 @@ public:
 	AABB GetAABB();
 
 	// 衝突応答
-	void OnCollision(const Player* player);
+	void OnCollisionEP(const Player* player);
+	// 衝突応答
+	void OnCollisionEB(const Bullet* bullet);
+
+	bool IsDead() const { return isEnemyDead_; }
+
 
 private:
 	KamataEngine::WorldTransform worldTransform_;
@@ -48,4 +54,6 @@ private:
 	// キャラクターの当たり判定サイズ
 	static inline const float kWidth = 0.8f;
 	static inline const float kHeight = 0.8f;
+
+	bool isEnemyDead_ = false;
 };
